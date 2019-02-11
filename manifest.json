@@ -1,0 +1,34 @@
+{
+    "manifest_version": 2,
+    "name": "BlockingSubresource",
+    "version": "1.0",
+
+    "description": "Blocks the facebook.com when it is a subresource.",
+
+    "icons": {
+        "48": "icon.png"
+    },
+
+    "content_scripts": [
+      {
+      "matches": ["*://*.facebook.com/*"],
+      "js": ["blockingSubresource.js"]
+      }
+    ],
+
+    "applications": {
+      "gecko": {
+        "id": "@subresource-facebook"
+      }
+    },
+
+    "background": {
+      "scripts": ["blockingSubresource.js"]
+    },
+
+    "permissions": [
+        "<all_urls>",
+        "webRequestBlocking",
+        "webRequest"
+    ]
+}
