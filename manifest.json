@@ -6,15 +6,8 @@
     "description": "Blocks the facebook.com when it is a subresource.",
 
     "icons": {
-        "48": "icon.png"
+        "48": "blocked-48.png"
     },
-
-    "content_scripts": [
-      {
-      "matches": ["*://*.facebook.com/*"],
-      "js": ["blockingSubresource.js"]
-      }
-    ],
 
     "applications": {
       "gecko": {
@@ -23,10 +16,11 @@
     },
 
     "background": {
-      "scripts": ["blockingSubresource.js"]
+      "scripts": ["background.js"]
     },
 
     "permissions": [
+        "tabs",
         "<all_urls>",
         "webRequestBlocking",
         "webRequest"
