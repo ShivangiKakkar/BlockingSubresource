@@ -1,5 +1,3 @@
-
-
 const facebook_domains = [
   "facebook.com", "www.facebook.com", "fb.com", "fbcdn.net", "fbsbx.com",
   "instagram.com", "www.instagram.com",
@@ -10,22 +8,20 @@ const facebook_domains = [
 ];
 
 function isFacebookDomain(url) {
-  hostname = new url(url).hostname;
-
-  if (url.hostname === facebook_domains) {
-    console.log("Donot Block:" + url);
-    return true;
-  } else if (url.hostname === new regex (/(^|[.])facebook.com/.test("b.facebook.com"))){ 
-    console.log("Donot Block:" + url);
-    return true;
-  } else {
-    console.log("Block:" + url);
-    return false;
+  hostname = new URL(url).hostname;
+  for (let facebookDomain of facebook_domains) {
+    if(facebookDomain.includes(hostname) || (url.hostname === facebookDomain || url.hostname === new RegExp (`^(.*\\.)?${facebookDomain}$`).test(hostname.host))) {
+      return true;
+    } else{
+      return false;
+    }
   }
 }
 
-async function blockRequestHandler () {
-  tabUrl = await browser.tabs.get(webRequest.tabid).url; //stuck here 
+async function blockRequestHandler (webRequest) {
+  console.log(webRequest);
+  const tab = await browser.tabs.get(webRequest.tabId);
+  tabUrl = tab.url; 
   if (isFacebookDomain(tabUrl) || !isFacebookDomain(webRequest.url)){
     return {};
   }
@@ -35,5 +31,4 @@ async function blockRequestHandler () {
 browser.webRequest.onBeforeRequest.addListener(
   blockRequestHandler,
   {urls: ["<all_urls>"]},
-  ["blocking"]
-);
+  ["blocking"]);
